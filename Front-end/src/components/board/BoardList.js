@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { isset, getParam, gfn_renderPaging, _movePage } from 'lib';
+import { isset, getParam, gfn_renderPaging } from 'lib';
 
 class BoardList extends Component {
   constructor(props){
@@ -35,13 +35,10 @@ class BoardList extends Component {
       eventName : isset(this.param.keyword) ? '/'+this.param.page_type+'/search/' : '/'+this.param.page_type+'/page/',
       keyword : this.param.keyword
     };
-    console.log(params);
-
-    this.page = gfn_renderPaging(params);
-    // console.log(this.state.page);
+    gfn_renderPaging(params);
   }
 
-  onClick = e => {
+  doSearch = e => {
     e.preventDefault();
     var keyword = document.getElementById("keyword").value;
     window.location.href = "/board/search/1/"+keyword;
@@ -85,12 +82,10 @@ class BoardList extends Component {
         </table>
         <div className="btn_group">
             제목 검색: <input type="text" id="keyword" name="keyword" defaultValue={this.param.keyword}/>
-            <a href="#this" className="btn-submit" id="search" onClick={this.onClick}>검색</a>
+            <a href="#this" className="btn-submit" id="search" onClick={this.doSearch}>검색</a>
             <a className="btn-default" href="/board/write">작성</a>
         </div>
-        <div id="PAGE_NAVI">
-          {this.page}
-        </div>
+        <div id="PAGE_NAVI"></div>
       </div>
     );
   }

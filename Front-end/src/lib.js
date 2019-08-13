@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function isset(variable) {
     return typeof(variable) !== "undefined" && variable !== null;
 }
@@ -36,14 +34,13 @@ recordCount : 페이지당 레코드 수
 totalCount : 전체 조회 건수
 eventName : 페이징 하단의 숫자 등의 버튼이 클릭되었을 때 호출될 함수 이름
 */
-var gfv_eventName = null;
-var gfv_keyword = null;
+
 export function gfn_renderPaging(params){
     var divId = params.divId; //페이징이 그려질 div id
     var totalCount = params.totalCount; //전체 조회 건수
     var currentIndex = params.pageIndex; //현재 위치
-    gfv_eventName = params.eventName;
-    gfv_keyword = params.keyword;
+    var gfv_eventName = params.eventName;
+    var gfv_keyword = params.keyword;
 
     if(gfn_isNull(currentIndex) === true){
         currentIndex = 1;
@@ -64,44 +61,43 @@ export function gfn_renderPaging(params){
     var last = (parseInt(totalIndexCount/10) < currentIndex/10) ? totalIndexCount%10 : 10;
     var prev = (parseInt((currentIndex-1)/10)*10) - 9 > 0 ? (parseInt((currentIndex-1)/10)*10) - 9 : 1;
     var next = (parseInt((currentIndex-1)/10)+1) * 10 + 1 < totalIndexCount ? (parseInt((currentIndex-1)/10)+1) * 10 + 1 : totalIndexCount;
-    
-    var result = [];
 
     if(totalIndexCount > 10){ //전체 인덱스가 10이 넘을 경우, 맨앞, 앞 태그 작성
-        result.push(<span key="pre"> <a href='#this' className='pad_5' onClick={_movePage} page="1">{"[<<]"}</a>
-                    <a href='#this' className='pad_5' onClick={_movePage} page={prev}>{"[<]"}</a> </span>);
+        preStr += "<a href='#this' class='pad_5' page='1'>[<<]</a>" +
+                "<a href='#this' class='pad_5' page='"+prev+"'>[<]</a>";
     }
     else if(totalIndexCount <=10 && totalIndexCount > 1){ //전체 인덱스가 10보다 작을경우, 맨앞 태그 작성
-        result.push(<span key="pre"><a href='#this' className='pad_5' onClick={_movePage} page="1">{"[<<]"}</a></span>);
+        preStr += "<a href='#this' class='pad_5' page='1'>[<<]</a>";
+    }
+
+    if(totalIndexCount > 10){ //전체 인덱스가 10이 넘을 경우, 맨뒤, 뒤 태그 작성
+        postStr += "<a href='#this' class='pad_5' page='"+next+"'>[>]</a>" + 
+                    "<a href='#this' class='pad_5' page='"+totalIndexCount+"'>[>>]</a>";
+    }
+    else if(totalIndexCount <=10 && totalIndexCount > 1){ //전체 인덱스가 10보다 작을경우, 맨뒤 태그 작성
+        postStr += "<a href='#this' class='pad_5' page='"+totalIndexCount+"'>[>>]</a>";
     }
 
     for(var i=first; i<(first+last); i++){
         if(String(i) !== currentIndex){
-            result.push(<span key={i}><a href='#this' className='pad_5' onClick={_movePage} page={i}>{i}</a></span>);
+            str += "<a href='#this' class='pad_5' page='"+i+"'>"+i+"</a>";
         }
         else{
-            result.push(<span key={i}><b><a href='#this' className='pad_5' onClick={_movePage} page={i}>{i}</a></b></span>);
+            str += "<b><a href='#this' class='pad_5' page='"+i+"'>"+i+"</a></b>";
         }
     }
+    document.getElementById(divId).innerHTML = preStr + str + postStr;
 
-    if(totalIndexCount > 10){ //전체 인덱스가 10이 넘을 경우, 맨뒤, 뒤 태그 작성
-        result.push(<span key="post"> <a href='#this' className='pad_5' onClick={_movePage} page={next}>[>]</a> 
-                    <a href='#this' className='pad_5' onClick={_movePage} page={totalIndexCount}>[>>]</a> </span>);
-    }
-    else if(totalIndexCount <=10 && totalIndexCount > 1){ //전체 인덱스가 10보다 작을경우, 맨뒤 태그 작성
-        result.push(<span key="post"><a href='#this' className='pad_5' onClick={_movePage} page={totalIndexCount}>[>>]</a></span>);
-    }
-
-    console.log(result)
-    return result;
-}
-
-export function _movePage(e){
-    var page = e.target.getAttribute('page');
-    if(gfn_isNull(gfv_keyword)) {
-        window.location.href = gfv_eventName+page;
-    }
-    else {
-        window.location.href = gfv_eventName+page+"/"+gfv_keyword;
-    }
+    document.querySelectorAll(".pad_5").forEach(function(element) {
+        element.addEventListener('click', e => {
+            e.preventDefault();
+            var page = e.target.getAttribute('page');
+            if(gfn_isNull(gfv_keyword)) {
+                window.location.href = gfv_eventName+page;
+            }
+            else {
+                window.location.href = gfv_eventName+page+"/"+gfv_keyword;
+            }
+        });
+    });
 }

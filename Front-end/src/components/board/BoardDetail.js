@@ -100,12 +100,12 @@ class BoardDetail extends Component {
     })
   }
 
-  onClick = e => {
+  submit = e => {
     e.preventDefault();
     this.insertComment();
   }
 
-  onClick2 = e => {
+  opendel = e => {
     e.preventDefault();
     if(document.getElementById("comment_list").querySelector(".btn_group") != null)
       document.getElementById("comment_list").querySelector(".btn_group").remove();
@@ -128,13 +128,6 @@ class BoardDetail extends Component {
         e.preventDefault();
         e.target.parentElement.remove();
     });
-
-    // document.querySelectorAll(".btn").forEach(function(element) {
-    //   element.addEventListener('click', e => {
-    //     e.preventDefault();
-    //     console.log(e.target);
-    //   });
-    // });
   }
 
   render(){
@@ -169,7 +162,7 @@ class BoardDetail extends Component {
                         <div className='desc'>{data[key].content}</div> 
                         <div className='date'>{data[key].date.replace('T', ' ').substr(0, 19)}</div> 
                         <div className='delete'>
-                          <a href='#this' id='opendel' onClick={this.onClick2}>
+                          <a href='#this' id='opendel' onClick={this.opendel}>
                             <img src={delete_button} alt="delete button"/>
                           </a>
                           <input type='hidden' id='idx' value={data[key].idx}/>
@@ -196,7 +189,7 @@ class BoardDetail extends Component {
             </span>
             <span className="desc"><textarea id="content" rows="5" placeholder="내용"></textarea></span>
             <div className="btn_group">
-                <button className="btn-submit" id="submit" onClick={this.onClick}>등록</button>
+                <button className="btn-submit" id="submit" onClick={this.submit}>등록</button>
             </div>
         </div>
         <div className="btn_group">
