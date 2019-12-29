@@ -122,7 +122,7 @@ span.middle.all ~ * { display: inline-block; vertical-align: middle; }
 .submit_comment > .desc { width: 86%; margin-left: 10px; }
 .submit_comment > .desc > textarea { width: 81%; }
 .submit_comment > .btn_group > .btn-submit { margin-right: 15px; }
-#chat_list { overflow: auto; word-wrap: break-word; width: 1200px; max-height: 400px; }
+#chat_list { overflow: auto; word-wrap: break-word; width: 1200px; max-height: 400px; min-height: 400px; }
 #chat_list > .table > .tr > .lbl { width: 15%; font-weight: bold; }
 #chat_list > .table > .tr > .desc { width: 73%; }
 #chat_list > .table > .tr > .date { text-align: right; width: 12%; }
@@ -132,6 +132,10 @@ span.middle.all ~ * { display: inline-block; vertical-align: middle; }
 .submit_chat > .desc { width: 86%; margin-left: 10px; }
 .submit_chat > .desc > textarea { width: 81%; }
 .submit_chat > .btn_group > .btn-submit { margin-right: 15px; }
-.btn-default, .btn-submit { margin-left: 5px; } /* nodejs에서만 사용 */
-.btn-submit.comment { margin-left: 0px; } /* react에서만 사용 */
-#PAGE_NAVI { margin: auto; display: table; } /* react에서만 사용 */
+
+/* nodejs에서만 사용 */
+.btn-default, .btn-submit { margin-left: 5px; }
+.btn-submit.comment { margin-left: 0px; }
+#PAGE_NAVI { margin: auto; display: table; }
+#chat_list > .table { border: none; }
+#comment_delete_form > .btn-submit { margin-left: 0px; }

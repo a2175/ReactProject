@@ -1,47 +1,12 @@
 import React, { Component } from 'react';
 
 class BoardWrite extends Component {
-  componentDidMount() {
-    document.getElementById("submit").addEventListener('click', e => {
-      e.preventDefault();
-
-      var name = document.getElementById("board_name").value;
-      var pw = document.getElementById("board_pw").value;
-      var subject = document.getElementById("board_subject").value;
-      var content = document.getElementById("board_content").value;
-
-      var formData = new FormData();
-      formData.append("request", "insert");
-      formData.append("name", name);
-      formData.append("pw", pw);
-      formData.append("subject", subject);
-      formData.append("content", content);
-  
-      var object = {};
-      formData.forEach(function(value, key){
-          object[key] = value;
-      });
-  
-      fetch('/api/board/insert', {
-          method: "POST",
-          body: JSON.stringify(object),
-          headers: {
-              'content-type': "application/json"
-          }
-      }).then(() => {
-        alert("완료되었습니다.");
-        window.location.href = "/board";
-      })
-    });
-  }
-
   render(){
     return (
       <div className="board_write auto-center">
-          <form action="/api/board/insert" method="post">
+          <form action="/api/board/posts" method="post">
           <fieldset>
             <legend>글작성</legend>
-              <input type="hidden" name="request" value="insert"/>
               <h3>글작성</h3>
               <div className="table">
                   <div className="tr">
@@ -62,7 +27,7 @@ class BoardWrite extends Component {
                   </div>
               </div>
               <div className="btn_group">
-                  <a className="btn-default" href="/board">취소</a>
+                  <a className="btn-default" href="/board/pages/1">취소</a>
                   <button className="btn-submit" id="submit">완료</button>
               </div>
           </fieldset>

@@ -1,47 +1,45 @@
-var url = require('url');
-var qs = require('querystring');
-var fs = require('fs');
+var http = require('http');
 var express = require('express');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
 
-global.PORT = 3001;
+global.PORT = 3002;
 global._ROOT = __dirname + "/";
 global._APP = _ROOT + "application/";
+global._SERVICE = _APP + "service/";
+global._DAO = _APP + "dao/";
 global._ROUTES = _APP + "routes/";
 global._CONFIG = _APP + "config/";
 
 var lib = require(_CONFIG + "lib"); // custom global function
 
-app = express();
-app.use(express.static("build"));
+var app = express();
+var server = http.createServer(app);
+app.use(express.static(_ROOT + "build"));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
+app.use(methodOverride(function(req, res){
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    var method = req.body._method
+    delete req.body._method
+    return method
+  }
+}));
 
 app.get('/favicon.ico', function(request, response) {
   response.sendStatus(404);
 });
 
-var callback = function(request, response) {
-  var _url = qs.unescape(request.url);
-  var pathname = url.parse(_url, true).pathname;
-  var param = getParam(pathname);
+var router = express.Router();
+router.use('/board', require(_ROUTES + 'boardRoute'));
+router.use('/comment', require(_ROUTES + 'commentRoute'));
+router.use('/chat', require(_ROUTES + 'chatRoute')(server));
+app.use('/api', router);
 
-  fs.readdir(_ROUTES, function(error, filelist) {
-    if (filelist.includes(param.page_type + ".js")) {
-      var route = require(_ROUTES + param.page_type);
-      new route(request, response, param);
-    } else {
-      response.send('404 Not Found');
-    }
-  });
-};
-
-app.get('/api/*', callback);
-app.post('/api/*', callback);
 app.get("/*", (request, response) => {
   response.sendFile(_ROOT + "build/index.html");
 });
 
-app.listen(PORT, function() {
-  console.log('server start!');
+server.listen(PORT, function() {
+  console.log(`server listening on port ${PORT}`);
 });

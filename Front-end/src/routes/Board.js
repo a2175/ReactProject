@@ -9,15 +9,15 @@ import BoardDelete from "components/board/BoardDelete"
 
 class Board extends Component {
     render(){
+      var url = this.props.match.url
       return (
         <div className="Board">
-            <Route exact path="/board" component={BoardList}/>
-            <Route path="/board/page" component={BoardList}/>
-            <Route path="/board/search" component={BoardList}/>
-            <Route path="/board/view" component={BoardDetail}/>
-            <Route path="/board/write" component={BoardWrite}/>
-            <Route path="/board/update" component={BoardUpdate}/>
-            <Route path="/board/delete" component={BoardDelete}/>
+            <Route exact path={url+"/pages/:page_num"} component={BoardList}/>
+            <Route path={url+"/pages/:page_num/:keyword"} component={BoardList}/>
+            <Route exact path={url+"/posts/:idx(\\d+)"} component={BoardDetail}/>
+            <Route path={url+"/posts/write"} component={BoardWrite}/>
+            <Route path={url+"/posts/:idx/edit"} component={BoardUpdate}/>
+            <Route path={url+"/posts/:idx/delete"} component={BoardDelete}/>
         </div>
       );
     }
