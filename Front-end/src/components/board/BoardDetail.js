@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import delete_button from 'resources/img/delete.jpg';
 
 class BoardDetail extends Component {
@@ -137,9 +138,9 @@ class BoardDetail extends Component {
             <div className='desc'>{data[key].content}</div>
             <div className='date'>{data[key].date.replace('T', ' ').substr(0, 19)}</div>
             <div className='delete'>
-              <a href='#this' id='opendel' onClick={this.commentDeleteUi}>
+              <Link id='opendel' to='' onClick={this.commentDeleteUi}>
                 <img src={delete_button} alt="delete button"/>
-              </a>
+              </Link>
               <input type='hidden' id='idx' value={data[key].idx}/>
             </div>
           </div>
@@ -172,9 +173,9 @@ class BoardDetail extends Component {
           </div>
         </form>
         <div className="btn_group">
-            <a className="btn-default" href="/board/pages/1">목록</a>
-            <a className="btn-submit" href={"/board/posts/"+this.params.idx+"/edit"}>수정</a>
-            <a className="btn-submit" href={"/board/posts/"+this.params.idx+"/delete"}>삭제</a>
+            <Link className="btn-default" to="/board/pages/1">목록</Link>
+            <Link className="btn-submit" to={"/board/posts/"+this.params.idx+"/edit"}>수정</Link>
+            <Link className="btn-submit" to={"/board/posts/"+this.params.idx+"/delete"}>삭제</Link>
         </div>
       </div>
     );

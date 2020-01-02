@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
-import Main from "./routes/Main"
-import Board from "./routes/Board"
-import Chat from "./routes/Chat"
+import { Header, Footer } from './components/common';
+import { Main, Board, Chat } from './routes';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
+        <Header/>
         <Route exact path="/" component={Main}/>
         <Route path="/board" component={Board}/>
         <Route path="/chat" component={Chat}/>
+        <Footer/>
       </div>
     );
   }

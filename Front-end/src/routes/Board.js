@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
-import BoardList from "components/board/BoardList"
-import BoardDetail from "components/board/BoardDetail"
-import BoardWrite from "components/board/BoardWrite"
-import BoardUpdate from "components/board/BoardUpdate"
-import BoardDelete from "components/board/BoardDelete"
+import { BoardList, BoardDetail, BoardWrite, BoardUpdate, BoardDelete } from "components/board"
 
 class Board extends Component {
     render(){

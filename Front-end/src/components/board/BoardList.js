@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { gfn_renderPaging } from 'resources/js/common';
 
 class BoardList extends Component {
@@ -30,8 +31,11 @@ class BoardList extends Component {
     e.preventDefault();
     this.params.keyword = document.getElementById("keyword").value;
     this.props.history.push(`/board/pages/1/${this.params.keyword}`);
-    fetch(`/api/board/pages/1/${this.params.keyword}`).then(res => res.json())
-      .then(data => this.setState({ list: data.list, listNum: data.listNum }))
+    if(this.params.page_num !== '1'){
+      fetch(`/api/board/pages/1/${this.params.keyword}`).then(res => res.json())
+        .then(data => this.setState({ list: data.list, listNum: data.listNum }))
+    }
+    this.params.page_num = '1';
   }
 
   getPostList() {
@@ -42,7 +46,7 @@ class BoardList extends Component {
         list.push(
           <tr key={data[key].idx}>
             <td>{data[key].idx}</td>
-            <td className="al_l"><a href={"/board/posts/"+data[key].idx}>{data[key].subject}{data[key].commentNum > 0 ? " ["+data[key].commentNum+"]" : ""}</a></td>
+            <td className="al_l"><Link to={"/board/posts/"+data[key].idx}>{data[key].subject}{data[key].commentNum > 0 ? " ["+data[key].commentNum+"]" : ""}</Link></td>
             <td>{data[key].name}</td>
             <td>{data[key].date.replace('T', ' ').substr(0, 19)}</td>
           </tr>
@@ -103,8 +107,8 @@ class BoardList extends Component {
         </table>
         <div className="btn_group">
             제목 검색: <input type="text" id="keyword" name="keyword" defaultValue={this.params.keyword}/>
-            <a href="#this" className="btn-submit" id="search" onClick={this.doSearch}>검색</a>
-            <a className="btn-default" href="/board/posts/write">작성</a>
+            <Link id="search" className="btn-submit" to="" onClick={this.doSearch}>검색</Link>
+            <Link className="btn-default" to="/board/posts/write">작성</Link>
         </div>
         <div id="PAGE_NAVI">
           {this.renderPaging()}

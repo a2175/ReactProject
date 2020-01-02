@@ -30,7 +30,7 @@ export function gfn_renderPaging(params){
   var prev = (parseInt((currentIndex-1)/10)*10) - 9 > 0 ? (parseInt((currentIndex-1)/10)*10) - 9 : 1;
   var next = (parseInt((currentIndex-1)/10)+1) * 10 + 1 < totalIndexCount ? (parseInt((currentIndex-1)/10)+1) * 10 + 1 : totalIndexCount;
   var key = 0;
-  
+
   if(totalIndexCount > 10){ //전체 인덱스가 10이 넘을 경우, 맨앞, 앞 태그 작성
       result.push(<a key={key++} href='#this' className='pad_5' page='1' onClick={eventName}>{"[<<]"}</a>);
       result.push(<a key={key++} href='#this' className='pad_5' page={prev} onClick={eventName}>{"[<]"}</a>);

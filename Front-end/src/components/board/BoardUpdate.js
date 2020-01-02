@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class BoardUpdate extends Component {
   constructor(props){
@@ -80,7 +81,7 @@ class BoardUpdate extends Component {
             <h3>글수정</h3>
             {this.getPostDetail()}
             <div className="btn_group">
-                <a className="btn-default" href={"/board/posts/"+this.params.idx}>취소</a>
+                <Link className="btn-default" to={"/board/posts/"+this.params.idx}>취소</Link>
                 <button className="btn-submit">완료</button>
             </div>
         </fieldset>

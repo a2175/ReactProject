@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class BoardWrite extends Component {
   render(){
@@ -27,7 +28,7 @@ class BoardWrite extends Component {
                   </div>
               </div>
               <div className="btn_group">
-                  <a className="btn-default" href="/board/pages/1">취소</a>
+                  <Link className="btn-default" to="/board/pages/1">취소</Link>
                   <button className="btn-submit" id="submit">완료</button>
               </div>
           </fieldset>
