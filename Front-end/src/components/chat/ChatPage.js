@@ -26,11 +26,11 @@ class ChatPage extends Component{
     }
 
     componentWillUpdate(nextProps, nextState) {
-      this.prevScrollHeight = document.getElementById("chat_list").scrollHeight;
+      this.prevScrollHeight = this.chatListDiv.scrollHeight;
     }
 
     componentDidUpdate(prevProps, prevState) {
-      var body = document.getElementById("chat_list");
+      var body = this.chatListDiv;
 
       if(body.scrollTop === (this.prevScrollHeight - body.offsetHeight)) // 현재 스크롤바가 끝에 위치한다면
         body.scrollTop = body.scrollHeight; // 자동으로 스크롤을 끝으로 위치시킨다
@@ -42,7 +42,7 @@ class ChatPage extends Component{
     onKeyDown = e => {
       if (e.keyCode === 13) {
         e.preventDefault();
-        document.getElementById("submit").click()
+        this.chatSubmitButton.click()
       }
     }
 
@@ -53,8 +53,8 @@ class ChatPage extends Component{
 
       this.socket.emit("insert", Object.fromEntries(formData));
 
-      document.getElementById("content").value = '';
-      document.getElementById("content").focus();
+      this.chatContentTextarea.value = '';
+      this.chatContentTextarea.focus();
     }
 
     now() {
@@ -88,7 +88,7 @@ class ChatPage extends Component{
       return (
         <div id="chat">
           <div className="auto-center">
-            <div id="chat_list" className="chat_list">
+            <div id="chat_list" className="chat_list" ref={(ref) => {this.chatListDiv = ref}}>
               <div className='table'>
                   {this.getChatList()}
               </div>
@@ -97,9 +97,9 @@ class ChatPage extends Component{
             <form id="form" action="" method="post" onSubmit={this.submitChat}>
               <div className="submit_chat">
                 <span className="input"><input type="text" id="name" name="name" placeholder="닉네임" autoFocus required /></span>
-                <span className="desc"><textarea id="content" name="content" rows="5" placeholder="내용" onKeyDown={this.onKeyDown} required></textarea></span>
+                <span className="desc"><textarea id="content" name="content" ref={(ref) => {this.chatContentTextarea = ref}} rows="5" placeholder="내용" onKeyDown={this.onKeyDown} required></textarea></span>
                 <div className="btn_group">
-                  <button className="btn-submit" id="submit">등록</button>
+                  <button className="btn-submit" id="submit" ref={(ref) => {this.chatSubmitButton = ref}}>등록</button>
                 </div>
               </div>
             </form>

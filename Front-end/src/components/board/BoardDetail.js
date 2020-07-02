@@ -8,7 +8,8 @@ class BoardDetail extends Component {
 
     this.state = {
       detail: {},
-      comment: {}
+      comment: {},
+      commentDeleteUiIndex: -1
     };
 
     this.params = {
@@ -21,35 +22,6 @@ class BoardDetail extends Component {
       fetch(`/api/board/posts/${this.params.idx}`).then(data => data.json()),
       fetch(`/api/comment/${this.params.idx}`).then(data => data.json())
     ]).then((data) => this.setState({ detail: data[0], comment: data[1] }))
-  }
-
-  commentDeleteUi = e => {
-    e.preventDefault();
-    if(document.getElementById("comment_list").querySelector(".btn_group") != null)
-      document.getElementById("comment_list").querySelector(".btn_group").remove();
-
-    var idx = e.target.parentElement.parentElement.querySelector("#idx").value;
-    var div = document.createElement("div");
-    div.className = "btn_group";
-    var str = `<form id='comment_delete_form' action='/api/comment/${idx}' method='post'>` +
-                "<input type='hidden' name='_method' value='DELETE'>" +
-                "<input type='password' id='commentpw' name='pw' placeholder='비밀번호' required>" +
-                "<button id='commentdelete' class='btn-submit' type='submit'>확인</button>" +
-                "<button id='commentcencel' class='btn-submit'>취소</button>" +
-              "</form>";
-    div.innerHTML = str;
-
-    e.target.parentElement.parentElement.appendChild(div);
-
-    document.getElementById("comment_delete_form").addEventListener('submit', e => {
-        e.preventDefault();
-        this.deleteComment(e.target);
-    });
-
-    document.getElementById("commentcencel").addEventListener('click', e => {
-        e.preventDefault();
-        e.target.parentElement.remove();
-    });
   }
 
   deleteComment(form) {
@@ -104,9 +76,9 @@ class BoardDetail extends Component {
       .then((data) => this.setState({ comment: data }))
     )
 
-    document.getElementById("name").value = '';
-    document.getElementById("pw").value = '';
-    document.getElementById("content").value = '';
+    this.commentNameInput.value = '';
+    this.commentPwInput.value = '';
+    this.commentContentTextarea.value = '';
   }
 
   getPostDetail() {
@@ -128,6 +100,33 @@ class BoardDetail extends Component {
     );
   }
 
+  getCommentDeleteUi(idx) {
+    return (
+      <div className="btn_group">
+        <form id='comment_delete_form' onSubmit={this.commentDeleteSubmit} action={`/api/comment/${idx}`} method='post'>
+          <input type='hidden' name='_method' value='DELETE' />
+          <input type='password' id='commentpw' name='pw' placeholder='비밀번호' required />
+          <button className='btn-submit' type='submit'>확인</button>
+          <button className='btn-submit' onClick={this.commentDeleteCancel}>취소</button>
+        </form>
+      </div>
+    );
+  }
+
+  commentDeleteSubmit = (e) => {
+    e.preventDefault();
+    this.deleteComment(e.target);
+  }
+
+  commentDeleteCancel = () => {
+    this.setState({ commentDeleteUiIdx: -1 })
+  }
+
+  commentDeleteButtonClick = (e) => {
+    e.preventDefault();
+    this.setState({ commentDeleteUiIdx: Number(e.target.parentElement.querySelector('input').value) })
+  }
+  
   getCommentList() {
     var list = [];
     var data = this.state.comment.list;
@@ -138,10 +137,11 @@ class BoardDetail extends Component {
             <div className='desc'>{data[key].content}</div>
             <div className='date'>{data[key].date.replace('T', ' ').substr(0, 19)}</div>
             <div className='delete'>
-              <Link id='opendel' to='' onClick={this.commentDeleteUi}>
+              <Link to='' onClick={this.commentDeleteButtonClick}>
                 <img src={delete_button} alt="delete button"/>
+                <input type='hidden' value={data[key].idx}/>
               </Link>
-              <input type='hidden' id='idx' value={data[key].idx}/>
+              {this.state.commentDeleteUiIdx === data[key].idx ? this.getCommentDeleteUi(data[key].idx) : "" }
             </div>
           </div>
         );
@@ -163,10 +163,10 @@ class BoardDetail extends Component {
         <form id="comment_form" action={`/comment/${this.params.idx}`} method="post" onSubmit={this.submitComment}>
           <div className="submit_comment">
               <span className="input">
-                  <div className="tr"><input type="text" id='name' name='name' placeholder="닉네임" required/></div>
-                  <div className="tr"><input type="password" id='pw' name='pw' placeholder="비밀번호" required/></div>
+                  <div className="tr"><input type="text" ref={(ref) => {this.commentNameInput = ref}} name='name' placeholder="닉네임" required/></div>
+                  <div className="tr"><input type="password" ref={(ref) => {this.commentPwInput = ref}} name='pw' placeholder="비밀번호" required/></div>
               </span>
-              <span className="desc"><textarea id='content' name="content" rows="5" placeholder="내용" required></textarea></span>
+              <span className="desc"><textarea ref={(ref) => {this.commentContentTextarea = ref}} name="content" rows="5" placeholder="내용" required></textarea></span>
               <div className="btn_group">
                   <button className="btn-submit" type="submit">등록</button>
               </div>

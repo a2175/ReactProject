@@ -29,7 +29,7 @@ class BoardList extends Component {
 
   doSearch = e => {
     e.preventDefault();
-    this.params.keyword = document.getElementById("keyword").value;
+    this.params.keyword = this.keywordInput.value;
     this.props.history.push(`/board/pages/1/${this.params.keyword}`);
     if(this.params.page_num !== '1'){
       fetch(`/api/board/pages/1/${this.params.keyword}`).then(res => res.json())
@@ -106,7 +106,7 @@ class BoardList extends Component {
             </tbody>
         </table>
         <div className="btn_group">
-            제목 검색: <input type="text" id="keyword" name="keyword" defaultValue={this.params.keyword}/>
+            제목 검색: <input type="text" ref={(ref) => {this.keywordInput = ref}} name="keyword" defaultValue={this.params.keyword}/>
             <Link id="search" className="btn-submit" to="" onClick={this.doSearch}>검색</Link>
             <Link className="btn-default" to="/board/posts/write">작성</Link>
         </div>
