@@ -3,7 +3,11 @@ React + Nodejs-Express + MySQL
 
 Nodejs 프로젝트의 프론트 엔드를 React로 만들어보았습니다.
 
-#version = 1.20v
+#version = 1.21v
+
+[ReactProject 1.21v]
+1. document.getElementById()를 ref로 변경
+2. BoardDetail.js에서 댓글 삭제 UI를 state를 사용하여 생성되도록 변경
 
 [ReactProject 1.20v]
 1. `<a>` tag를 `<Link>` tag로 수정 
