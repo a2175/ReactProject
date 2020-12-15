@@ -3,7 +3,11 @@ React + Nodejs-Express + MySQL
 
 Nodejs 프로젝트의 프론트 엔드를 React로 만들어보았습니다.
 
-#version = 1.21v
+#version = 1.22v
+
+[ReactProject 1.22v]
+1. common.js에서 gfn_renderPaging 메소드 에러 수정
+2. BoardDetail.js에서 댓글 삭제 UI 버튼 클릭 이벤트 코드 수정
 
 [ReactProject 1.21v]
 1. document.getElementById()를 ref로 변경
