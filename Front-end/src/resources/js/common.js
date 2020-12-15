@@ -49,11 +49,11 @@ export function gfn_renderPaging(params){
   }
 
   if(totalIndexCount > 10){ //전체 인덱스가 10이 넘을 경우, 맨뒤, 뒤 태그 작성
-      result.push(<a key={key++} href='#this' className='pad_5' page={next} onClick={eventName}>[>]</a>);
-      result.push(<a key={key++} href='#this' className='pad_5' page={totalIndexCount} onClick={eventName}>[>>]</a>);
+      result.push(<a key={key++} href='#this' className='pad_5' page={next} onClick={eventName}>{"[>]"}</a>);
+      result.push(<a key={key++} href='#this' className='pad_5' page={totalIndexCount} onClick={eventName}>{"[>>]"}</a>);
   }
   else if(totalIndexCount <=10 && totalIndexCount > 1){ //전체 인덱스가 10보다 작을경우, 맨뒤 태그 작성
-      result.push(<a key={key++} href='#this' className='pad_5' page={totalIndexCount} onClick={eventName}>[>>]</a>);
+      result.push(<a key={key++} href='#this' className='pad_5' page={totalIndexCount} onClick={eventName}>{"[>>]"}</a>);
   }
 
   return result;

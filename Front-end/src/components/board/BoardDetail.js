@@ -122,27 +122,23 @@ class BoardDetail extends Component {
     this.setState({ commentDeleteUiIdx: -1 })
   }
 
-  commentDeleteButtonClick = (e) => {
-    e.preventDefault();
-    this.setState({ commentDeleteUiIdx: Number(e.target.parentElement.querySelector('input').value) })
+  commentDeleteButtonClick = (idx) => {
+    this.setState({ commentDeleteUiIdx: idx })
   }
   
   getCommentList() {
     var list = [];
     var data = this.state.comment.list;
-    for(var key in data) {
+    for(let key in data) {
         list.push(
           <div className='tr' key={data[key].idx}>
             <div className='lbl'>{data[key].name} </div>
             <div className='desc'>{data[key].content}</div>
             <div className='date'>{data[key].date.replace('T', ' ').substr(0, 19)}</div>
-            <div className='delete'>
-              <Link to='' onClick={this.commentDeleteButtonClick}>
-                <img src={delete_button} alt="delete button"/>
-                <input type='hidden' value={data[key].idx}/>
-              </Link>
-              {this.state.commentDeleteUiIdx === data[key].idx ? this.getCommentDeleteUi(data[key].idx) : "" }
+            <div className='delete' onClick={() => {this.commentDeleteButtonClick(data[key].idx)}}>
+              <img src={delete_button} alt="delete button"/>
             </div>
+            {this.state.commentDeleteUiIdx === data[key].idx ? this.getCommentDeleteUi(data[key].idx) : "" }
           </div>
         );
     };
